@@ -18,7 +18,7 @@ describe("Cidades - DeleteById", ()=>{
 
   });
 
-  it("Tenat apagar registro que não existe!", async ()=>{
+  it("Tenta apagar registro que não existe!", async ()=>{
     const res1 = await testServer
     .delete('/cidades/99999')
     .send();
