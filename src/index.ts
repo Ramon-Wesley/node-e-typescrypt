@@ -8,9 +8,15 @@ const serverListen=():void=>{
 }
 
 if(localhost !== 'true'){
-  Knex.migrate.latest().then(()=>{
-    serverListen()
-  }).catch(console.log)
+  Knex.migrate
+  .latest()
+  .then(()=>{
+    Knex.seed.run().then(()=>{
+      serverListen()
+    }).catch(console.log)
+    
+  })
+  .catch(console.log)
 }else{
   serverListen();
 }
