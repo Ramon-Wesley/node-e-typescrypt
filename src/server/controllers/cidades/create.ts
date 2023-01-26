@@ -1,4 +1,4 @@
-import { Request, Response,RequestHandler } from "express";
+import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
 import { ICidade } from "../../database/models";

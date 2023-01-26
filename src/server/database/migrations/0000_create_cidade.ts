@@ -1,5 +1,5 @@
 import knex, { Knex } from 'knex' ;
-import { ETableNames } from '../seeds/E TableName';
+import { ETableNames } from '../ETableName';
 
 
 export async function up(knex: Knex) {

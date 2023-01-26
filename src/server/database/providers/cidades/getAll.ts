@@ -1,4 +1,4 @@
-import { ETableNames } from "../../seeds/E TableName";
+import { ETableNames } from "../../ETableName";
 import { Knex } from "../../knex";
 import { ICidade } from "../../models";
 
