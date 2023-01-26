@@ -1,5 +1,4 @@
 import {knex} from 'knex'
-import {env} from 'process'
 import {development,production,test} from './Environment'
 
 const getEnvironment= ()=>{
