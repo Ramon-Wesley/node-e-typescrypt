@@ -6,7 +6,7 @@ export async function up(knex: Knex) {
   knex.schema.createTable(ETableNames.pessoa, table =>{
     table.bigIncrements('id').primary().index();
     table.string('nomeCompleto').index().notNullable();
-    table.string('email').unique().notNullable()
+    table.string('email').unique().notNullable();
 
     table
     .bigInteger('cidadeId')
@@ -14,7 +14,7 @@ export async function up(knex: Knex) {
     .references('id')
     .inTable(ETableNames.cidade)
     .onUpdate('CASCADE')
-    .onDelete("RESTRICT")
+    .onDelete("RESTRICT");
 
     table.comment('Tabela usada para armazenar pessoas no sistema!');
   }).then(()=>{

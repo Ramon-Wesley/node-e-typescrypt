@@ -38,5 +38,5 @@ if(result instanceof Error) return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
   }
 })
 
-return res.status(StatusCodes.NO_CONTENT).json(result)
+return res.status(StatusCodes.NO_CONTENT).send()
 }

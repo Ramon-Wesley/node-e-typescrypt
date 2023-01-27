@@ -1,47 +1,37 @@
 import { RequestHandler } from "express";
-import {SchemaOf,ValidationError} from 'yup'
 import { StatusCodes } from "http-status-codes";
+import {SchemaOf,ValidationError} from 'yup'
 
+type TProperty='body'|'query' |'params'| 'header'
+type TGetSChema=<T>(getSchema:SchemaOf<T>)=>SchemaOf<T>
+type TAllSchema=Record<TProperty,SchemaOf<any>>
+type TGetAllSchema=(getSchema:TGetSChema)=>Partial<TAllSchema>
 
+type TValidation=(getSchema:TGetAllSchema)=>RequestHandler
 
+export const validation:TValidation=(getSchema)=>async(req,res,next)=>{
+    const schemas = getSchema((schema)=>schema)
+    const ErrorResult:Record<string,Record<string,string>>={}
 
-type TProperty= 'body' | 'header' | 'params' | 'query';
+    
+    Object.entries(schemas).forEach(([key,schema])=>{
+        try {
+            schema.validateSync(req[key as TProperty],{abortEarly:false})
+        } catch (err) {
+            const yupError=err as ValidationError
+            const errors:Record<string,string>={}
+                yupError.inner.forEach((error)=>{
+                    if(error.path === undefined) return 
+                    errors[error.path]=error.message
+                })
+                ErrorResult[key]=errors
+        }
+    })
+if(Object.entries(ErrorResult).length === 0){
+    return next()
+}else{
 
-type TGetSchema = <T>(schema: SchemaOf<T>)=> SchemaOf<any>;
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({errors:ErrorResult})
+}
 
-type TAllSchemas = Record<TProperty,SchemaOf<any>>;
-
-type TGetAllSchemas = (getSchema: TGetSchema)=> Partial<TAllSchemas>;
-
-type TValidation = (getAllAchemas:TGetAllSchemas)=>RequestHandler;
-
-
-export const validation : TValidation=(getAllAchemas)=>async(req,res,next)=>{
-  const schemas = getAllAchemas((schema) => schema);
-  const errorsResult: Record<string,Record<string, string>>={};
-
-  Object.entries(schemas).forEach(([key,schema])=>{
-    try{
-       schema.validateSync(req[key as TProperty], {abortEarly: false})
-      // return next();
-   }catch(error){
-     const yupError = error as ValidationError;
-     const errors:Record<string,string> ={};
- 
-     yupError.inner.forEach(error =>{
-       if(error.path === undefined) return;
- 
-       errors[error.path] = error.message;
-     });
-
-     errorsResult[key]= errors;
-    // return res.status(StatusCodes.BAD_REQUEST).json({errors});
-   }
-  })
-
-  if(Object.entries(errorsResult).length === 0){
-    return next();
-  }else{
-    return res.status(StatusCodes.BAD_REQUEST).json({errors: errorsResult});
-  }
-};
+}
