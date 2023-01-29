@@ -24,7 +24,7 @@ export const getById=async(req:Request<IParamsProps>,res:Response)=>{
 
 const result = await PessoasProvider.getById(req.params.id)
 
-if(result instanceof Error) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({errors:result.message})
+if(result instanceof Error) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({errors:{default:result.message}})
 
 return res.status(StatusCodes.OK).json(result)
 

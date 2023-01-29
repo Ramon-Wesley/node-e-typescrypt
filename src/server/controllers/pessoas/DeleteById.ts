@@ -19,7 +19,9 @@ if(!req.params.id) return res.status(StatusCodes.BAD_REQUEST).json({errors:{defa
 
   const result = await PessoasProvider.deleteById(req.params.id)
 
-  if(result instanceof Error) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({errors:result.message})
+  if(result instanceof Error) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({errors:{
+    default:result.message
+}})
 
   return res.status(StatusCodes.NO_CONTENT).send()
 }

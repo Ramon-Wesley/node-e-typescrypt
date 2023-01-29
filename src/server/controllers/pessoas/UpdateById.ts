@@ -29,7 +29,7 @@ export const upadateById=async(req:Request<IParamsProps,{},IBodyProps>,res:Respo
   }
   const result =await PessoasProvider.updateById(req.params.id,req.body)
   if(result instanceof Error){
-     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({errors:result.message})
+     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({errors:{default:result.message}})
   }
   return res.status(StatusCodes.NO_CONTENT).json(result)
 }
