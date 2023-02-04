@@ -31,7 +31,7 @@ if(Object.entries(ErrorResult).length === 0){
     return next()
 }else{
 
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({errors:ErrorResult})
+    return res.status(StatusCodes.BAD_REQUEST).json({errors:ErrorResult})
 }
 
 }

@@ -1,10 +1,12 @@
 import { Knex } from './server/database/knex';
 import { server } from './server/server';
 
-const localhost=process.env.ON_LOCALHOST
+const localhost=process.env.ON_LOCALHOST 
+const port=process.env.PORT as number | undefined
+
 
 const serverListen=():void=>{
-  server.listen(process.env.PORT|| 3333, () => console.log(`App rodando na porta ${process.env.PORT || 3333}`));
+  server.listen(port|| 8000, () => console.log(`App rodando na porta ${port || 8000}`));
 }
 
 if(localhost !== 'true'){
